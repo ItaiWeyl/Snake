@@ -12,14 +12,14 @@ def get_words_dict(address) -> Iterable[str]:
     return words_dict
 
 
-def sort_by_letters(board: Board, words: Iterable[str]) -> Iterable[str]:
+def sort_by_letters(board: Board, words: Iterable[str]) -> Dict[str]:
     sorted_dict = {}
-    current_letters = ""
+    current_letters = []
     # adding all the letters in the board to a string
     for line in board:
         for letter in line:
             if letter not in current_letters:
-                current_letters += letter
+                current_letters.append(letter)
     for word in words:
         break_checker = False
         for letter in word:
@@ -28,13 +28,14 @@ def sort_by_letters(board: Board, words: Iterable[str]) -> Iterable[str]:
                 break
         if not break_checker:
             sorted_dict[word] = "_"
+    return sorted_dict
 
 
 def is_valid_path(board: Board, path: Path, words: Iterable[str]) -> Optional[str]:
     word_check = ""
     board_length = len(board)
     board_width = len(board[0])
-    # in case on of the coordinates is outside the board
+    # in case one of the coordinates is outside the board
     for cor in path:
         if cor[0] >= board_length or cor[1] >= board_width:
             return None
@@ -48,9 +49,9 @@ def is_valid_path(board: Board, path: Path, words: Iterable[str]) -> Optional[st
 
 
 def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path]:
-    print("hh")
+    pass
 
-sdgdsg
+
 def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path]:
     pass
 
