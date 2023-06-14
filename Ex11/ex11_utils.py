@@ -48,7 +48,7 @@ def is_valid_path(board: Board, path: Path, words: Iterable[str]) -> Optional[st
 
 
 def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path]:
-    pass
+    print("hh")
 
 
 def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path]:
