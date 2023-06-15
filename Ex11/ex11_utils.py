@@ -1,5 +1,6 @@
 from typing import List, Tuple, Iterable, Optional, Dict
 
+
 Board = List[List[str]]
 Path = List[Tuple[int, int]]
 
@@ -14,18 +15,32 @@ def get_words_dict(address) -> Iterable[str]:
 
 def sort_by_letters(board: Board, words: Iterable[str]) -> Dict[str, str]:
     sorted_dict = {}
-    current_letters = []
+    one_len_letters = []
+    two_len_letters = []
+
     # adding all the letters in the board to a string
     for line in board:
         for letter in line:
-            if letter not in current_letters:
-                current_letters.append(letter)
+            if len(letter) == 1:
+                one_len_letters.append(letter)
+            else:
+                two_len_letters.append(letter)
     for word in words:
-        counter = 0
-        for letter in current_letters:
-            if letter in word:
-                counter += 1*len(letter)
-        if counter == len(word):
+        for i in range(len(word)):
+            if word[i] not in one_len_letters:
+                if len(word) == 1:
+                    break
+                else:
+                    if i == 0:
+                        if word[0:2] not in two_len_letters:
+                            break
+                    elif i == len(word) - 1:
+                        if word[-2:] not in two_len_letters:
+                            break
+                    else:
+                        if (word[i - 1: i + 1] not in two_len_letters) and (word[i: i + 2] not in two_len_letters):
+                            break
+        else:
             sorted_dict[word] = "_"
     return sorted_dict
 
@@ -129,10 +144,4 @@ def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path
 def max_score_paths(board: Board, words: Iterable[str]) -> List[Path]:
     pass
 
-import boggle_board_randomizer
-b = [['L', 'K', 'E', 'O'],
-    ['I', 'P', 'O', 'O'],
-    ['QU', 'S', 'O', 'E'],
-    ['H', 'W', 'N', 'L']]
-words = list(get_words_dict("boggle_dict.txt"))
-print(find_length_n_paths(3, b, words))
+
