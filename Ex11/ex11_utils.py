@@ -60,7 +60,7 @@ def is_valid_path(board: Board, path: Path, words: Iterable[str]) -> Optional[st
 def path_to_word(board, path):
     """ gets a path and a board, creates the word from that path on the board"""
     word = ""
-    for cor in path[::-1]:
+    for cor in path:
         word += board[cor[0]][cor[1]]
     return word
 
@@ -90,7 +90,7 @@ def is_path_in_words(words_dict, path_word, illegal_dict):
 def find_len_path_helper(n, board, words_dict, final_list, path, illegal_words):
     path_word = path_to_word(board, path)
     if len(path) == n:
-        if path not in illegal_words:
+        if path_word not in illegal_words:
             if is_path_in_words(words_dict, path_word, illegal_words):
                 final_list.append(path)
         return None
@@ -98,10 +98,10 @@ def find_len_path_helper(n, board, words_dict, final_list, path, illegal_words):
         return None
     if is_path_in_words(words_dict, path_word, illegal_words):
         path_set = set(path)
-        neighbors = get_neighbors(path[0], board)
+        neighbors = get_neighbors(path[-1], board)
         neighbors = neighbors - path_set
         for cor in neighbors:
-            find_len_path_helper(n, board, words_dict, final_list, [cor] + path, illegal_words)
+            find_len_path_helper(n, board, words_dict, final_list, path + [cor], illegal_words)
     return None
 
 
