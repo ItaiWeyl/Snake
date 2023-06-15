@@ -61,7 +61,7 @@ def is_valid_path(board: Board, path: Path, words: Iterable[str]) -> Optional[st
 
 def get_neighbors(cor, board):
     """ gets a coordinate, returns a list with all its neighbors"""
-    neighbors = []
+    neighbors = set()
     cor_row = cor[0]
     cor_col = cor[1]
     for i in range(-1, 2):
@@ -69,16 +69,32 @@ def get_neighbors(cor, board):
             if 0 <= cor_row + i < len(board) and 0 <= cor_col < len(board[0]):
                 new_cor = (cor_row, cor_col)
                 if new_cor != cor:
-                    neighbors.append(new_cor)
+                    neighbors.add(new_cor)
+    return neighbors
 
 
-def find_len_path_helper(n, board, words, final_list, path):
+def find_len_path_helper(n, board, words_dict, final_list, path):
+    if len(path) == n:
+        checker = is_valid_path(board, path, words_dict)
+        if checker:
+            final_list.append(path)
+            return None
+    path_set = set(path)
+    neighbors = get_neighbors(path[0], board)
+    neighbors = neighbors - path_set
+    for cor in neighbors:
+        find_len_path_helper(n, board, words_dict, final_list, [cor] + path)
+    return None
 
 
 def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path]:
-    final_path = []
+    final_list = []
     words_dict = get_words_dict(words)
     sorted_dict = sort_by_letters(board, words_dict)
+    for line in board:
+        for cor in line:
+            find_len_path_helper(n, board, sorted_dict, final_list, [cor])
+    return final_list
 
 
 
