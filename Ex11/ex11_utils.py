@@ -137,11 +137,75 @@ def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path
     return final_list
 
 
+def find_len_words_helper(n, board, words_dict, final_list, path, illegal_words):
+    path_word = path_to_word(board, path)
+    if len(path_word) == n:
+        if path_word not in illegal_words:
+            if is_path_in_words(words_dict, path_word, illegal_words):
+                if path_word in words_dict:
+                    final_list.append(path)
+        return None
+    if path_word in illegal_words:
+        return None
+    if is_path_in_words(words_dict, path_word, illegal_words):
+        path_set = set(path)
+        neighbors = get_neighbors(path[-1], board)
+        neighbors = neighbors - path_set
+        for cor in neighbors:
+            find_len_path_helper(n, board, words_dict, final_list, path + [cor], illegal_words)
+    return None
+
+
 def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path]:
-    pass
+    final_list = []
+    if n == 0:
+        return final_list
+    words_dict = {}
+    for word in words:
+        if len(word) == n:
+            words_dict[word] = "_"
+    words_dict = sort_by_letters(board, words_dict)
+    illegal_words = {}
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            cor = (i, j)
+            find_len_path_helper(n, board, words_dict, final_list, [cor], illegal_words)
+    return final_list
+
+
+def max_score_helper(board, words_dict, final_dict, path, illegal_words):
+    path_word = path_to_word(board, path)
+    if path_word in illegal_words:
+        return None
+    if path_word in words_dict:
+        if path_word not in final_dict:
+            final_dict[path_word] = (path, len(path) ** 2)
+        else:
+            new_score = len(path) ** 2
+            previous_score = final_dict[path_word][1]
+            if new_score > previous_score:
+                final_dict[path_word] = (path, new_score)
+    if is_path_in_words(words_dict, path_word, illegal_words):
+        path_set = set(path)
+        neighbors = get_neighbors(path[-1], board)
+        neighbors = neighbors - path_set
+        for cor in neighbors:
+            max_score_helper(board, words_dict, final_dict, path + [cor], illegal_words)
+    return None
 
 
 def max_score_paths(board: Board, words: Iterable[str]) -> List[Path]:
-    pass
-
-
+    final_list = []
+    final_dict = {}
+    words_dict = {}
+    for word in words:
+        words_dict[word] = "_"
+    words_dict = sort_by_letters(board, words_dict)
+    illegal_words = {}
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            cor = (i, j)
+            max_score_helper(board, words_dict, final_dict, [cor], illegal_words)
+    for value in final_dict.values():
+        final_list.append(value[0])
+    return final_list
