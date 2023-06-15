@@ -152,7 +152,7 @@ def find_len_words_helper(n, board, words_dict, final_list, path, illegal_words)
         neighbors = get_neighbors(path[-1], board)
         neighbors = neighbors - path_set
         for cor in neighbors:
-            find_len_path_helper(n, board, words_dict, final_list, path + [cor], illegal_words)
+            find_len_words_helper(n, board, words_dict, final_list, path + [cor], illegal_words)
     return None
 
 
@@ -169,7 +169,7 @@ def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path
     for i in range(len(board)):
         for j in range(len(board[i])):
             cor = (i, j)
-            find_len_path_helper(n, board, words_dict, final_list, [cor], illegal_words)
+            find_len_words_helper(n, board, words_dict, final_list, [cor], illegal_words)
     return final_list
 
 
