@@ -21,12 +21,11 @@ def sort_by_letters(board: Board, words: Iterable[str]) -> Dict[str, str]:
             if letter not in current_letters:
                 current_letters.append(letter)
     for word in words:
-        break_checker = False
-        for letter in word:
-            if letter not in current_letters:
-                break_checker = True
-                break
-        if not break_checker:
+        counter = 0
+        for letter in current_letters:
+            if letter in word:
+                counter += 1*len(letter)
+        if counter == len(word):
             sorted_dict[word] = "_"
     return sorted_dict
 
@@ -129,3 +128,11 @@ def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path
 
 def max_score_paths(board: Board, words: Iterable[str]) -> List[Path]:
     pass
+
+import boggle_board_randomizer
+b = [['L', 'K', 'E', 'O'],
+    ['I', 'P', 'O', 'O'],
+    ['QU', 'S', 'O', 'E'],
+    ['H', 'W', 'N', 'L']]
+words = list(get_words_dict("boggle_dict.txt"))
+print(find_length_n_paths(3, b, words))
