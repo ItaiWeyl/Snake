@@ -92,7 +92,8 @@ def find_len_path_helper(n, board, words_dict, final_list, path, illegal_words):
     if len(path) == n:
         if path_word not in illegal_words:
             if is_path_in_words(words_dict, path_word, illegal_words):
-                final_list.append(path)
+                if path_word in words_dict:
+                    final_list.append(path)
         return None
     if path_word in illegal_words:
         return None
@@ -111,7 +112,7 @@ def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path
         return final_list
     words_dict = {}
     for word in words:
-        if len(word) == n:
+        if len(word) >= n:
             words_dict[word] = "_"
     words_dict = sort_by_letters(board, words_dict)
     illegal_words = {}
