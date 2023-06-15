@@ -8,11 +8,11 @@ def get_words_dict(address) -> Iterable[str]:
     words_dict = {}
     with open(address, "r") as file:
         for word in file:
-            words_dict[word] = "_"
+            words_dict[word.strip()] = "_"
     return words_dict
 
 
-def sort_by_letters(board: Board, words: Iterable[str]) -> Dict[str]:
+def sort_by_letters(board: Board, words: Iterable[str]) -> Dict[str, str]:
     sorted_dict = {}
     current_letters = []
     # adding all the letters in the board to a string
@@ -72,8 +72,8 @@ def get_neighbors(cor, board):
     cor_col = cor[1]
     for i in range(-1, 2):
         for j in range(-1, 2):
-            if 0 <= cor_row + i < len(board) and 0 <= cor_col < len(board[0]):
-                new_cor = (cor_row, cor_col)
+            if 0 <= cor_row + i < len(board) and 0 <= cor_col + j < len(board[0]):
+                new_cor = (cor_row + i, cor_col + j)
                 if new_cor != cor:
                     neighbors.add(new_cor)
     return neighbors
@@ -103,24 +103,25 @@ def find_len_path_helper(n, board, words_dict, final_list, path, illegal_words):
         neighbors = get_neighbors(path[0], board)
         neighbors = neighbors - path_set
         for cor in neighbors:
-            find_len_path_helper(n, board, words_dict, final_list, [cor] + path)
+            find_len_path_helper(n, board, words_dict, final_list, [cor] + path, illegal_words)
     return None
 
 
 def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path]:
     final_list = []
-    words_dict = get_words_dict(words)
-    sorted_dict = sort_by_letters(board, words_dict)
-    for key in sorted_dict.keys():
-        if len(key) != n:
-            sorted_dict.pop(key)
+    if n == 0:
+        return final_list
+    words_dict = {}
+    for word in words:
+        if len(word) == n:
+            words_dict[word] = "_"
+    words_dict = sort_by_letters(board, words_dict)
     illegal_words = {}
-    for line in board:
-        for cor in line:
-            find_len_path_helper(n, board, sorted_dict, final_list, [cor], illegal_words)
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            cor = (i, j)
+            find_len_path_helper(n, board, words_dict, final_list, [cor], illegal_words)
     return final_list
-
-
 
 
 def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path]:
