@@ -88,14 +88,12 @@ def is_path_in_words(words_dict, path_word, illegal_dict):
 
 
 def find_len_path_helper(n, board, words_dict, final_list, path, illegal_words):
-    if len(path) == n:
-        checker = is_valid_path(board, path, words_dict)
-        if checker:
-            final_list.append(path)
-            return None
-        else:
-            return None
     path_word = path_to_word(board, path)
+    if len(path) == n:
+        if path not in illegal_words:
+            if is_path_in_words(words_dict, path_word, illegal_words):
+                final_list.append(path)
+        return None
     if path_word in illegal_words:
         return None
     if is_path_in_words(words_dict, path_word, illegal_words):
