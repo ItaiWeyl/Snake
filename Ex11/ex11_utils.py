@@ -111,6 +111,9 @@ def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path
     final_list = []
     words_dict = get_words_dict(words)
     sorted_dict = sort_by_letters(board, words_dict)
+    for key in sorted_dict.keys():
+        if len(key) != n:
+            sorted_dict.pop(key)
     illegal_words = {}
     for line in board:
         for cor in line:
