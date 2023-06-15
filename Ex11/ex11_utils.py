@@ -36,16 +36,40 @@ def is_valid_path(board: Board, path: Path, words: Iterable[str]) -> Optional[st
     board_length = len(board)
     board_width = len(board[0])
     # in case one of the coordinates is outside the board
-    for cor in path:
-        if cor[0] >= board_length or cor[1] >= board_width:
+    path_set = set(path)
+    if len(path) != len(path_set):
+        return None
+    for i in range(len(path) - 1):
+        cor = path[i]
+        next_cor = path[i+1]
+        delta_cor = cor[0] + cor[1] - next_cor[0] - next_cor[1]
+        if delta_cor < -2 or delta_cor > 2:
             return None
+        if cor[0] >= board_length or cor[0] < 0 or cor[1] >= board_width or cor[1] < 0:
+            return None
+    if path[-1][0] >= board_length or path[-1][0] < 0 or path[-1][1] >= board_width or\
+            path[-1][1] < 0:  # for the last coordinate
+        return None
     # check if the word is in the dictionary
-    for cor in path:
+    for cor in path[::-1]:
         word_check += board[cor[0]][cor[1]]
     if word_check in words:
         return word_check
     else:
         return None
+
+
+def get_neighbors(cor, board):
+    """ gets a coordinate, returns a list with all its neighbors"""
+    neighbors = []
+    cor_row = cor[0]
+    cor_col = cor[1]
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            if 0 <= cor_row + i < len(board) and 0 <= cor_col < len(board[0]):
+                new_cor = (cor_row, cor_col)
+                if new_cor != cor:
+                    neighbors.append(new_cor)
 
 
 def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path]:
@@ -58,3 +82,4 @@ def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path
 
 def max_score_paths(board: Board, words: Iterable[str]) -> List[Path]:
     pass
+
