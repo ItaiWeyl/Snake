@@ -49,22 +49,27 @@ def is_valid_path(board: Board, path: Path, words: Iterable[str]) -> Optional[st
     board_length = len(board)
     board_width = len(board[0])
     path_set = set(path)
+    if not path or not words:
+        return None
     if len(path) != len(path_set):  # in case one of the coordinates is outside the board
         return None
+
     for i in range(len(path) - 1):
         cor = path[i]
         next_cor = path[i+1]
-        delta_cor = cor[0] + cor[1] - next_cor[0] - next_cor[1]
-        if delta_cor < -2 or delta_cor > 2:
+        delta_cor_x = cor[0] - next_cor[0]
+        delta_cor_y = cor[1] - next_cor[1]
+        if (delta_cor_x > 1 or delta_cor_x < -1) or (delta_cor_y > 1 or delta_cor_y < -1):
             return None
         # in case one of the coordinates is outside the board
         if cor[0] >= board_length or cor[0] < 0 or cor[1] >= board_width or cor[1] < 0:
             return None
+
     if path[-1][0] >= board_length or path[-1][0] < 0 or path[-1][1] >= board_width or\
             path[-1][1] < 0:  # for the last coordinate
         return None
-    # check if the word is in the dictionary
-    word = path_to_word(board, path)
+
+    word = path_to_word(board, path)  # check if the word is in the dictionary
     if word in words:
         return word
     else:
