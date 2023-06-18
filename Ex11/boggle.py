@@ -91,6 +91,19 @@ class Board:
         self.set_buttons()
         self.root.mainloop()
 
+    def restart(self):
+        self.table = randomize_board()
+        self.score = 0
+        self.time = 0
+        self.available = set()
+        self.words_found = []
+        self.path = []
+        self.buttons = []
+        self.set_buttons()
+        self.update_time()
+
+
+
 
 if __name__ == '__main__':
     root = tk.Tk()
