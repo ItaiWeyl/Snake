@@ -27,11 +27,9 @@ class Board:
         self.delete_button.config(command=lambda: self.delete_word())
 
         self.right_frame = tk.Frame(root, bg="white", pady=40, padx=40)
-        self.right_frame.grid(row=0, column=1)
-        self.right_frame.rowconfigure(0, weight=1)
-        self.right_frame.columnconfigure(1, weight=1)
+        self.right_frame.grid(row=0, column=0)
         red_label = tk.Label(self.right_frame, text='WORDS:', bg="gray", height=5, width=8)
-        red_label.grid(row=0, column=1)
+        red_label.grid(row=0, column=0)
 
         self.upper_frame = tk.Frame(self.left_frame, bg="gray")
         self.upper_frame.grid(row=0, column=1, padx=40, pady=20)
@@ -46,14 +44,17 @@ class Board:
         self.timer = tk.Label(self.upper_frame, text="3:00", font=("helveca", 20), fg="green", bg="pink", width=10)
         self.timer.pack(fill=tk.NONE)
 
-        self.options = tk
+        self.restart_var = tk.StringVar()
+        self.restart_var.set("Option")
+        self.options = tk.OptionMenu(self.left_frame, self.restart_var, "Restart", command=self.restart)
+        self.options.grid(row=0, column=8)
 
     def is_legal_word(self):
         current_word = self.displayed_word
         if current_word in self.words_dict and current_word not in self.words_found:
             self.score += len(current_word) ** 2
             new_label = tk.Label(self.right_frame, text=current_word, height=5, width=10)
-            new_label.pack()
+            new_label.grid()
             self.words_found.append(current_word)
             self.path = []
             self.available = []
@@ -117,7 +118,8 @@ class Board:
         self.update_time()
         self.root.mainloop()
 
-    def restart(self):
+    def restart(self, restart_selected):
+        self.restart_var.set("Option")
         self.table = randomize_board()
         self.score = 0
         self.time = 0
@@ -133,4 +135,3 @@ if __name__ == '__main__':
     root = tk.Tk()
     b = Board(root, {"BT": 0, "DE": 0, "SH": 0, "AE": 0, "TO": 0})
     b.start()
-
