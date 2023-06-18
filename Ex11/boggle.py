@@ -1,5 +1,6 @@
 import tkinter as tk
 from boggle_board_randomizer import randomize_board
+import ex11_utils as helper
 
 
 class Board:
@@ -87,8 +88,31 @@ class Board:
                 tmp_row.append(new_b)
             self.buttons.append(tmp_row)
 
+    def update_buttons_color(self):
+        for row in range(self.height):
+            for col in range(self.width):
+                button = self.buttons[row][col]
+                if (row, col) in self.path:
+                    button.config(bg="green")
+                elif (row, col) in self.available:
+                    button.config(bg="cyan")
+                else:
+                    button.config(bg="grey97")
+
+    def update_time(self):
+        self.time += 1
+        seconds = 181 - self.time
+        minutes = 0
+        while seconds >= 60:
+            seconds -= 60
+            minutes += 1
+        time_display = str(minutes) + ":" + str(seconds)
+        self.timer.configure(text=time_display)
+        self.timer.after(1000, self.update_time)
+
     def start(self):
         self.set_buttons()
+        self.update_time()
         self.root.mainloop()
 
     def restart(self):
