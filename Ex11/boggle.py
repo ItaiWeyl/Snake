@@ -46,6 +46,8 @@ class Board:
         self.timer = tk.Label(self.upper_frame, text="3:00", font=("helveca", 20), fg="green", bg="pink", width=10)
         self.timer.pack(fill=tk.NONE)
 
+        self.options = tk
+
     def is_legal_word(self):
         current_word = self.displayed_word
         if current_word in self.words_dict and current_word not in self.words_found:
@@ -125,8 +127,6 @@ class Board:
         self.buttons = []
         self.set_buttons()
         self.update_time()
-
-
 
 
 if __name__ == '__main__':
