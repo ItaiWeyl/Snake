@@ -4,7 +4,7 @@ Snake Game
 Introduction
 This project is a classic implementation of the Snake game in Python. The objective of the game is to control a snake on a grid, guiding it to eat food pellets while avoiding collisions with the snake's own body or the walls of the playing area. It's a simple yet addictive arcade game.
 
-How to Play:
+# How to Play:
 
 Execute the game_display.py file with system arguments to initiate the game: python game_display.py
 
@@ -16,9 +16,9 @@ Left arrow: Move the snake to the left.
 Right arrow: Move the snake to the right.
 
 The game ends if the snake collides with itself or the boundaries of the playing area.
-Requirements
+# Requirements
 Python 3.x
 Keyboard arrow keys
 
-Author:
+# Author:
 Itai Weyl
