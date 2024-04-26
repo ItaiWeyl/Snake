@@ -6,7 +6,7 @@ This project is a classic implementation of the Snake game in Python. The object
 
 How to Play:
 
-To play the game, follow these steps:
+To play the game, follow the next steps:
 
 Execute the game_display.py file with system arguments to initiate the game: python game_display.py
 
